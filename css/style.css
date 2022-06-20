@@ -1,0 +1,62 @@
+/* ---------- box-sizing and resets ------------- */
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+/* ---------- start writing here ------------- */
+
+body {
+    background-color: #333;
+    display: grid;
+    place-items: center;
+}
+
+.form-group {
+    background-color: rgb(250, 116, 67);
+    display: flex;
+    flex-direction: column;
+    width: max(200px, 50vw);
+    padding: 0.8em;
+    border-radius: 5px;
+}
+
+.group-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#seat-map {
+    padding: 1rem;
+}
+
+#seat-map .cell {
+    display: block;
+    aspect-ratio: 1;
+    background-color: rgb(37, 121, 255);
+    border-radius: 50%;
+}
+
+#seat-map .cell.selected {
+    background-color: green;
+}
+
+.hide {
+    display: none;
+}
+
+.active {
+    display: flex;
+}
