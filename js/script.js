@@ -1,6 +1,8 @@
+const submittedData = [];
+
 function generateSeatMap(row, col) {
     const mapTable = document.getElementById("seat-map");
-    mapTable.innerHTML = "";
+    mapTable.innerHTML = "<h5>choose a seat (also more than 1)</h5>";
     for (let i = 0; i < row; i++) {
         mapTable.innerHTML += `
             <div class="row">
@@ -20,16 +22,42 @@ function generateSeatMap(row, col) {
 
 const nextBtns = [...document.querySelectorAll("[data-next]")];
 const previousBtns = [...document.querySelectorAll("[data-previous]")];
+const backToForm = document.getElementById("backToForm");
+const btnAdmin = document.getElementById("btnAccessoAdmin");
+const form = document.getElementById("main-form");
+const formGoups = [...document.getElementsByClassName("form-group")];
+window.groupIndex = 0;
 
 nextBtns.forEach((btn) => btn.addEventListener("click", handleNextClick));
 previousBtns.forEach((btn) =>
     btn.addEventListener("click", handlePreviusClick)
 );
 
-function handleCellClick({ target }) {
-    if (target.classList.contains("selected")) return;
+backToForm.addEventListener("click", () => {
+    window.groupIndex = 0;
+    updateVisibleGroup();
+});
 
-    target.classList.add("selected");
+form.addEventListener("submit", handleSubmit);
+
+btnAdmin.addEventListener("click", handleBtnAdminClick);
+
+function handleSubmit(e) {
+    e.preventDefault();
+    formGoups[2].classList.add("hide");
+    formGoups[2].classList.add("active");
+
+    const cells = [...document.querySelectorAll("#seat-map .cell")];
+
+    cells.forEach((cell) => cell.classList.remove("selected"));
+    form.reset();
+
+    window.groupIndex++;
+    updateVisibleGroup();
+}
+
+function handleCellClick({ target }) {
+    target.classList.toggle("selected");
 }
 
 function handlePreviusClick() {
@@ -39,7 +67,60 @@ function handlePreviusClick() {
 
 function handleNextClick() {
     window.groupIndex++;
+    if (window.groupIndex == 2) {
+        createSummary();
+    }
     updateVisibleGroup();
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function createSummary() {
+    const name = capitalize(document.getElementById("txtName").value);
+    const surname = capitalize(document.getElementById("txtSurname").value);
+    const birth_date = document.getElementById("dtBirthdate").value;
+    const seatCoords = [
+        ...document.querySelectorAll("#seat-map  .cell.selected"),
+    ]
+        .map(
+            (seat) =>
+                `riga: ${+seat.dataset.row + 1}\ncolonna: ${
+                    +seat.dataset.col + 1
+                }`
+        )
+        .join("-");
+
+    const summmary_container = document.getElementById("summary-container");
+
+    summmary_container.innerHTML = "";
+
+    summmary_container.innerHTML += `
+        <div>
+            <h5>Nome: </h5> ${name || `inserisci un nome valido`}
+        </div>
+        <div>
+            <h5>Cognome: </h5> ${surname || `inserisci un cognome valido`}
+        </div>
+        <div>
+            <h5>Data di nascita: </h5> ${
+                birth_date || `inserisci una data di nascita valida`
+            }
+        </div>
+        <div>
+            <h5>Posto/i scelto/i: </h5> ${
+                seatCoords.replace("-", "\n") || `scegli almeno un posto `
+            }
+        </div>
+    `;
+
+    submittedData.push({
+        name: name,
+        surname: surname,
+        birthDate: birth_date,
+        seat: seatCoords,
+    });
 }
 
 function updateVisibleGroup() {
@@ -54,8 +135,10 @@ function updateVisibleGroup() {
     });
 }
 
-const formGoups = [...document.getElementsByClassName("form-group")];
-window.groupIndex = 0;
+function handleBtnAdminClick() {
+    const container = document.createElement("div");
+    container.classList.add("container");
+}
 
-generateSeatMap(6, 10);
+generateSeatMap(8, 8);
 updateVisibleGroup();
