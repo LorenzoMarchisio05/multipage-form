@@ -42,6 +42,15 @@ form.addEventListener("submit", handleSubmit);
 
 btnAdmin.addEventListener("click", handleBtnAdminClick);
 
+formGoups.forEach((form) => {
+    form.addEventListener("animationend", handleAnimationEnd);
+});
+
+function handleAnimationEnd({ target }) {
+    if (target.classList.contains("hide")) target.style.display = "none";
+    else if (target.classList.contains("active")) target.style.display = "flex";
+}
+
 function handleSubmit(e) {
     e.preventDefault();
     formGoups[2].classList.add("hide");
@@ -121,6 +130,8 @@ function createSummary() {
         birthDate: birth_date,
         seat: seatCoords,
     });
+
+    console.log(submittedData);
 }
 
 function updateVisibleGroup() {
@@ -137,7 +148,42 @@ function updateVisibleGroup() {
 
 function handleBtnAdminClick() {
     const container = document.createElement("div");
-    container.classList.add("container");
+    container.classList.add("container", "data-container");
+
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
+    thead.innerHTML = `
+            <tr>
+                <th>Nome Completo</th> <th>Data di Nascita</th> <th>Posti selzionati</th>
+            </tr>`;
+
+    for (const { name, surname, birthDate, seat } of submittedData) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${
+                name + " " + surname
+            }</td><td>${birthDate}</td><td><select>${seat
+            .split("-")
+            .map(
+                (seat) => "<option>" + seat.replace("\n", " ") + "</option>"
+            )}</select></td>
+        `;
+        tbody.append(tr);
+    }
+
+    const btn = document.createElement("button");
+    btn.classList.add("btn");
+    btn.innerText = "chiudi";
+    btn.onclick = () => {
+        container.remove();
+    };
+
+    table.append(thead);
+    table.append(tbody);
+    container.append(table);
+    container.append(btn);
+    document.body.append(container);
 }
 
 generateSeatMap(8, 8);

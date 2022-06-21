@@ -23,7 +23,6 @@ body {
 
 .form-group {
     background-color: rgb(250, 116, 67);
-    display: flex;
     flex-direction: column;
     width: max(200px, 40vw);
     padding: 0.8em;
@@ -53,10 +52,75 @@ body {
     background-color: green;
 }
 
-.hide {
-    display: none;
+.form-group.hide {
+    animation: hide 300ms ease-in-out forwards;
 }
 
-.active {
+.form-group.active {
+    animation: active 300ms 400ms ease-in-out forwards;
+}
+
+.data-container {
+    width: 90%;
+    height: 80%;
+    background-color: rgb(250, 116, 67);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.data-container :is(table, tr) {
+    width: 100%;
+}
+
+.data-container table {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.data-container thead {
+    flex-grow: 0;
+}
+
+.data-container tbody {
+    flex-grow: 2;
+}
+
+.data-container tr {
+    display: flex;
+    flex-direction: row;
+}
+
+.data-container :is(td, th) {
+    flex: 0 0 30%;
+}
+
+.data-container button {
+    width: fit-content;
+    padding: 0.4rem 1rem;
+}
+
+@keyframes hide {
+    from {
+        transform: scale(1) translateX(0);
+    }
+    to {
+        transform: scale(0) translateX(-100%);
+    }
+}
+
+@keyframes active {
+    from {
+        transform: scale(0) translateX(-100%);
+    }
+    to {
+        transform: scale(1) translateX(0);
+    }
 }
