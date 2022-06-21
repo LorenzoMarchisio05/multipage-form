@@ -23,10 +23,13 @@ body {
 
 .form-group {
     background-color: rgb(250, 116, 67);
+    display: flex;
     flex-direction: column;
     width: max(200px, 40vw);
     padding: 0.8em;
     border-radius: 5px;
+
+    animation: hide 250ms ease-in-out forwards;
 }
 
 .group-controls {
@@ -52,12 +55,12 @@ body {
     background-color: green;
 }
 
-.form-group.hide {
-    animation: hide 300ms ease-in-out forwards;
+.form-group.active {
+    animation: active 250ms ease-in-out forwards;
 }
 
-.form-group.active {
-    animation: active 300ms 400ms ease-in-out forwards;
+.form-group.hide {
+    display: none;
 }
 
 .data-container {
@@ -109,18 +112,22 @@ body {
 
 @keyframes hide {
     from {
+        opacity: 1;
         transform: scale(1) translateX(0);
     }
     to {
-        transform: scale(0) translateX(-100%);
+        opacity: 0;
+        transform: scale(0) translateX(-50%);
     }
 }
 
 @keyframes active {
     from {
-        transform: scale(0) translateX(-100%);
+        opacity: 0;
+        transform: translateX(-50%);
     }
     to {
-        transform: scale(1) translateX(0);
+        opacity: 1;
+        transform: translateX(0);
     }
 }

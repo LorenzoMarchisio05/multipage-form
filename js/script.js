@@ -43,13 +43,11 @@ form.addEventListener("submit", handleSubmit);
 btnAdmin.addEventListener("click", handleBtnAdminClick);
 
 formGoups.forEach((form) => {
-    form.addEventListener("animationend", handleAnimationEnd);
+    form.addEventListener("animationend", () => {
+        formGoups[groupIndex].classList.remove("hide");
+        form.classList.toggle("hide", !form.classList.contains("active"));
+    });
 });
-
-function handleAnimationEnd({ target }) {
-    if (target.classList.contains("hide")) target.style.display = "none";
-    else if (target.classList.contains("active")) target.style.display = "flex";
-}
 
 function handleSubmit(e) {
     e.preventDefault();
@@ -62,6 +60,7 @@ function handleSubmit(e) {
     form.reset();
 
     window.groupIndex++;
+    formGoups[groupIndex].classList.remove("hide");
     updateVisibleGroup();
 }
 
@@ -136,13 +135,7 @@ function createSummary() {
 
 function updateVisibleGroup() {
     formGoups.forEach((group, i) => {
-        if (i === groupIndex) {
-            group.classList.add("active");
-            group.classList.remove("hide");
-        } else {
-            group.classList.add("hide");
-            group.classList.remove("active");
-        }
+        group.classList.toggle("active", i === groupIndex);
     });
 }
 
