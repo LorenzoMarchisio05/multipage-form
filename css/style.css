@@ -25,11 +25,20 @@ body {
     background-color: rgb(250, 116, 67);
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: max(200px, 40vw);
     padding: 0.8em;
     border-radius: 5px;
 
     animation: hide 250ms ease-in-out forwards;
+}
+
+.form-group > * {
+    width: 100%;
+}
+
+.form-group :is(input, label) {
+    max-width: 40ch;
 }
 
 .group-controls {

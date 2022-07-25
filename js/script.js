@@ -153,14 +153,25 @@ function handleBtnAdminClick() {
 
     for (const { name, surname, birthDate, seat } of submittedData) {
         const tr = document.createElement("tr");
+
+        const htmlUl =
+            seat.length == 0
+                ? "<option>Nessun post selzionato</option>"
+                : seat
+                      .split("-")
+                      .map(
+                          (seat) =>
+                              "<option>" + seat.replace("\n", " ") + "</option>"
+                      );
+
         tr.innerHTML = `
-            <td>${
-                name + " " + surname
-            }</td><td>${birthDate}</td><td><select>${seat
-            .split("-")
-            .map(
-                (seat) => "<option>" + seat.replace("\n", " ") + "</option>"
-            )}</select></td>
+            <td>${name + " " + surname}</td>
+            <td>${birthDate}</td>
+            <td>
+                <select>
+                    ${htmlUl}
+                </select>
+            </td>
         `;
         tbody.append(tr);
     }
@@ -181,3 +192,4 @@ function handleBtnAdminClick() {
 
 generateSeatMap(8, 8);
 updateVisibleGroup();
+formGoups[window.groupIndex].classList.remove("hide");
